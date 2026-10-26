@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1120">
+<meta name="color-scheme" content="dark">
+<title>Військова Анкета</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1120; --card2:#0f172a; --line:#1e293b; --line2:#334155;
+  --text:#e2e8f0; --muted:#94a3b8; --dim:#64748b;
+  --accent:#3b82f6; --accent2:#60a5fa; --ok:#10b981; --ok2:#34d399; --danger:#ef4444;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0; min-height:100vh; color:var(--text);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  background:
+    radial-gradient(900px 500px at 0% -10%, rgba(59,130,246,.18), transparent 60%),
+    radial-gradient(800px 500px at 100% 0%, rgba(16,185,129,.08), transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+  padding-bottom:calc(96px + env(safe-area-inset-bottom));
+}
+body.lock{overflow:hidden}
+button{font-family:inherit}
+[hidden]{display:none!important}
+.app{max-width:1080px;margin:0 auto;padding:16px}
+
+/* ---------- cards ---------- */
+.card{
+  background:linear-gradient(180deg,rgba(30,41,59,.72),rgba(15,23,42,.78));
+  border:1px solid rgba(148,163,184,.12); border-radius:22px;
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  box-shadow:0 12px 40px -16px rgba(0,0,0,.6);
+}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1fr auto;gap:28px;padding:28px 30px;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.logo{font-weight:900;font-style:italic;font-size:15px;letter-spacing:-.5px;padding:6px 10px;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff}
+.tag{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted)}
+.hero h1{margin:0 0 8px;font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-1px;line-height:1.1}
+.hero p{margin:0 0 20px;color:var(--muted);font-size:14px;line-height:1.5;max-width:560px}
+.privacy{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);margin-top:12px}
+.progress-top{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px}
+.progress-top b{color:var(--text)}
+.track{height:8px;border-radius:99px;background:rgba(148,163,184,.12);overflow:hidden}
+.fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#3b82f6,#10b981);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+
+.photo-block{display:flex;flex-direction:column;align-items:center;gap:10px}
+.photo{
+  position:relative;width:116px;height:149px;border-radius:16px;padding:0;cursor:pointer;overflow:hidden;
+  border:2px dashed var(--line2);background:rgba(2,6,23,.5);color:var(--dim);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;transition:border-color .2s,transform .2s;
+}
+.photo:hover{border-color:var(--accent);color:var(--accent2)}
+.photo.has{border:2px solid var(--accent)}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-actions{display:flex;gap:6px}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:30;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  margin:14px -16px 0;padding:10px 16px;
+  background:rgba(11,17,32,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(148,163,184,.08);
+}
+.nav::-webkit-scrollbar{display:none}
+.nav button{
+  flex:none;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--line2);background:rgba(15,23,42,.7);color:var(--muted);
+  font-size:13px;font-weight:600;white-space:nowrap;transition:all .2s;
+}
+.nav button:hover{color:var(--text)}
+.nav button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.nav .cnt{font-size:11px;font-weight:700;opacity:.75}
+.nav button.done:not(.active) .cnt{color:var(--ok2);opacity:1}
+
+/* ---------- sections ---------- */
+.sec{padding:24px;margin-top:16px;scroll-margin-top:70px;animation:rise .5s both}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-num{min-width:44px;height:32px;padding:0 10px;border-radius:10px;display:grid;place-items:center;
+  background:rgba(59,130,246,.15);color:var(--accent2);font-weight:800;font-size:12px}
+.sec h2{margin:0;flex:1;font-size:17px;font-weight:800;letter-spacing:-.2px}
+.pill{font-size:12px;font-weight:700;color:var(--muted);background:rgba(148,163,184,.1);padding:4px 10px;border-radius:999px;transition:all .3s}
+.pill.full{color:var(--ok2);background:rgba(16,185,129,.14)}
+
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.c-12{grid-column:span 12}.c-9{grid-column:span 9}.c-8{grid-column:span 8}
+.c-6{grid-column:span 6}.c-4{grid-column:span 4}.c-3{grid-column:span 3}
+@media (max-width:900px){.c-9,.c-8,.c-4,.c-3{grid-column:span 6}}
+@media (max-width:600px){.c-9,.c-8,.c-6,.c-4{grid-column:span 12}.c-3{grid-column:span 6}}
+
+.f label{display:flex;align-items:center;gap:8px;margin:0 0 7px 2px;font-size:12.5px;font-weight:600;color:var(--muted);line-height:1.3}
+.f .n{flex:none;display:inline-grid;place-items:center;min-width:24px;height:20px;padding:0 5px;border-radius:6px;
+  background:rgba(148,163,184,.12);color:var(--text);font-size:11px;font-weight:700;transition:all .25s}
+.f.filled .n{background:rgba(16,185,129,.18);color:var(--ok2)}
+.req{color:var(--danger);font-style:normal;font-weight:800}
+.in{
+  width:100%;display:block;outline:none;color:var(--text);
+  background:rgba(2,6,23,.55);border:1px solid var(--line2);border-radius:12px;
+  padding:12px 14px;font:500 16px/1.4 inherit;transition:border-color .2s,box-shadow .2s,background .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.in::placeholder{color:#475569}
+.in:hover{border-color:#475569}
+.in:focus{border-color:var(--accent);background:rgba(2,6,23,.85);box-shadow:0 0 0 4px rgba(59,130,246,.18)}
+textarea.in{resize:none;min-height:50px;overflow:hidden}
+.in.upper{text-transform:uppercase;font-weight:700;letter-spacing:.3px}
+.in.callsign{text-transform:uppercase;font-weight:800;color:var(--accent2);letter-spacing:.5px}
+.f.err .in{border-color:var(--danger);box-shadow:0 0 0 4px rgba(239,68,68,.18)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:1px solid var(--line2);background:transparent;color:var(--muted);font-size:12px;font-weight:500;
+  padding:5px 11px;border-radius:999px;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.chip:hover{border-color:var(--accent);color:var(--text)}
+.chip.on{background:rgba(59,130,246,.2);border-color:var(--accent);color:#fff}
+
+/* ---------- consent ---------- */
+.consent{display:flex;gap:14px;align-items:flex-start;padding:20px 22px;margin-top:16px;cursor:pointer;transition:border-color .25s}
+.consent.on{border-color:rgba(16,185,129,.45)}
+.consent input{appearance:none;-webkit-appearance:none;flex:none;width:26px;height:26px;margin:0;border-radius:8px;cursor:pointer;
+  border:2px solid var(--line2);background:rgba(2,6,23,.5);display:grid;place-items:center;transition:all .2s}
+.consent input:checked{background:var(--ok);border-color:var(--ok)}
+.consent input:checked::after{content:"";width:7px;height:13px;border:solid #fff;border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg)}
+.consent span{font-size:14px;line-height:1.5;color:#cbd5e1}
+.consent.err{border-color:var(--danger)}
+
+.rights{text-align:center;font-size:12px;line-height:1.6;color:var(--dim);margin:28px 0 8px}
+.rights b{color:var(--muted)}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap;
+  border:1px solid var(--line2);background:rgba(30,41,59,.85);color:var(--text);
+  font-size:14px;font-weight:700;padding:13px 18px;border-radius:14px;
+  transition:transform .12s,background .2s,border-color .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+.btn:hover{border-color:#475569;background:rgba(51,65,85,.85)}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:linear-gradient(135deg,#3b82f6,#2563eb);border-color:transparent;color:#fff;box-shadow:0 10px 28px -10px rgba(59,130,246,.8)}
+.btn.primary:hover{box-shadow:0 12px 32px -8px rgba(59,130,246,.9)}
+.btn.sm{padding:8px 12px;font-size:12px;border-radius:10px}
+.btn.icon{padding:8px 10px}
+.btn.danger{color:#fca5a5}
+.btn.danger:hover{border-color:var(--danger)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.sm svg{width:15px;height:15px}
+
+/* ---------- bottom bar ---------- */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:rgba(11,17,32,.88);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  border-top:1px solid rgba(148,163,184,.1)}
+.bar-in{max-width:1048px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.ring{flex:none;width:46px;height:46px;position:relative}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:4}
+.ring .bg{stroke:rgba(148,163,184,.15)}
+.ring .fg{stroke:url(#rg);stroke-linecap:round;stroke-dasharray:113.1;stroke-dashoffset:113.1;transition:stroke-dashoffset .5s}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:800}
+.bar-info{flex:1;min-width:0}
+.bar-info b{display:block;font-size:14px}
+.bar-info small{display:block;color:var(--dim);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){
+  .bar .btn-clear span{display:none}
+  .bar .btn-clear{padding:13px}
+  .bar .btn.primary{padding:13px 16px}
+}
+
+/* ---------- camera ---------- */
+.cam{position:fixed;inset:0;z-index:100;background:#000;display:none;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:16px}
+.cam.open{display:flex;animation:fade .2s}
+.cam-frame{position:relative;width:min(88vw,calc(64vh * 35 / 45));aspect-ratio:35/45;border-radius:22px;overflow:hidden;background:#0f172a}
+.cam-frame video{width:100%;height:100%;object-fit:cover;display:block}
+.cam-frame video.mirror{transform:scaleX(-1)}
+.cam-guide{position:absolute;left:19%;right:19%;top:10%;height:64%;border:2px dashed rgba(255,255,255,.55);border-radius:50%;pointer-events:none}
+.cam-hint{color:#cbd5e1;font-size:13px;text-align:center}
+.cam-ctrl{display:flex;align-items:center;gap:30px}
+.round{width:54px;height:54px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;background:rgba(255,255,255,.12);color:#fff}
+.round svg{width:24px;height:24px}
+.shutter{width:78px;height:78px;border-radius:50%;cursor:pointer;background:#fff;border:6px solid #000;box-shadow:0 0 0 3px #fff;transition:transform .1s}
+.shutter:active{transform:scale(.9)}
+
+/* ---------- dialogs ---------- */
+dialog.modal{border:1px solid rgba(59,130,246,.35);background:#0f172a;color:var(--text);border-radius:26px;
+  padding:34px 28px 26px;width:calc(100% - 32px);max-width:420px;text-align:center;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
+dialog.modal[open]{animation:pop .28s cubic-bezier(.2,.9,.3,1.2)}
+dialog.modal::backdrop{background:rgba(2,6,23,.75);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.modal .ico{width:74px;height:74px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;background:linear-gradient(135deg,#3b82f6,#2563eb);box-shadow:0 12px 30px -10px rgba(59,130,246,.9)}
+.modal .ico.warn{background:linear-gradient(135deg,#ef4444,#b91c1c);box-shadow:0 12px 30px -10px rgba(239,68,68,.8)}
+.modal .ico svg{width:36px;height:36px;color:#fff}
+.modal h3{margin:0 0 8px;font-size:24px;font-weight:900;letter-spacing:-.5px}
+.modal p{margin:0 0 22px;color:var(--muted);font-size:15px;line-height:1.5}
+.modal p b{color:var(--accent2)}
+.modal .tip{font-size:12.5px;color:var(--dim);background:rgba(148,163,184,.08);border-radius:12px;padding:10px 12px;margin:-6px 0 20px;line-height:1.45}
+.modal .acts{display:flex;gap:10px}
+.modal .acts .btn{flex:1}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;top:calc(14px + env(safe-area-inset-top));left:50%;z-index:200;max-width:calc(100% - 32px);
+  transform:translate(-50%,-30px);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.2,.9,.3,1.2);
+  background:#1e293b;border:1px solid var(--line2);color:var(--text);padding:12px 18px;border-radius:14px;
+  font-size:14px;font-weight:600;box-shadow:0 16px 40px -12px rgba(0,0,0,.7);text-align:center}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.toast.err{border-color:rgba(239,68,68,.6);background:#2a1418}
+.toast.ok{border-color:rgba(16,185,129,.6);background:#0f2a22}
+
+/* ---------- animations ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes shake{0%,100%{transform:none}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+@media (max-width:640px){
+  .app{padding:12px}
+  .nav{margin:12px -12px 0;padding:10px 12px}
+  .hero{grid-template-columns:1fr;padding:22px 20px;gap:22px}
+  .hero-main{order:2}
+  .photo-block{order:1}
+  .sec{padding:20px 16px;border-radius:20px}
+}
+
+/* =================== PDF =================== */
+#pdf{display:none;background:#fff;color:#000;font-family:"Times New Roman",Times,serif}
+.p-head{display:flex;gap:7mm;align-items:flex-start;margin-bottom:6mm}
+.p-photo{flex:none;width:35mm;height:45mm;border:1px solid #000;display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;overflow:hidden}
+.p-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.p-text{flex:1;text-align:center;padding-top:1mm}
+.p-title{font-size:20px;font-weight:bold;letter-spacing:3px;text-decoration:underline}
+.p-sub{font-size:14px;font-weight:bold;margin-top:2px}
+.p-line{border-bottom:1px solid #000;min-height:20px;margin-top:8mm;font-size:13px;padding:0 4px}
+.p-line.it{font-style:italic}
+.p-line.b{font-weight:bold;text-transform:uppercase}
+.p-cap{font-size:9px;color:#333;margin-top:1px}
+.pt{width:100%;border-collapse:collapse;table-layout:fixed}
+.pt th,.pt td{border:1px solid #000;padding:3px 6px;font-size:12px;line-height:1.2;vertical-align:top;text-align:left;word-wrap:break-word;overflow-wrap:anywhere}
+.pt th{background:#eee;text-align:center;font-weight:bold}
+.pt .c1{text-align:center}
+.pt .v{white-space:pre-wrap}
+.pt .fam-h{text-align:center;font-weight:bold;background:#f4f4f4}
+.pt .p-rights{font-size:8.5px;text-align:center;padding:3px 6px}
+.p-consent{font-size:11px;font-style:italic;border:1px solid #000;padding:6px 8px;margin-top:5mm;line-height:1.35}
+.p-consent b{text-decoration:underline}
+.p-sign{display:flex;justify-content:space-between;padding:0 12mm;margin:14mm 0 5mm}
+.p-sign>div{width:55mm;text-align:center}
+.p-sign .ln{border-bottom:1px solid #000;min-height:18px;font-size:13px}
+.p-sign .cp{font-size:9px}
+
+@media print{
+  @page{size:A4;margin:10mm 12mm}
+  html,body{background:#fff!important;padding:0!important;margin:0!important}
+  body>*:not(#pdf){display:none!important}
+  #pdf{display:block!important}
+  .pg2{break-before:page;page-break-before:always}
+  tr,.p-head,.p-consent,.p-sign{break-inside:avoid;page-break-inside:avoid}
+  thead{display:table-header-group}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b82f6"/><stop offset="1" stop-color="#10b981"/></linearGradient></defs>
+</svg>
+
+<div class="app">
+  <header class="card hero">
+    <div class="hero-main">
+      <div class="brand"><span class="logo">СДК</span><span class="tag">Лист соціально-демографічних даних</span></div>
+      <h1>Анкета військовослужбовця</h1>
+      <p>Заповніть усі 41 пункт. Можна обирати готові варіанти під полями. Наприкінці натисніть «Сформувати PDF».</p>
+      <div class="progress">
+        <div class="progress-top"><span>Заповнено</span><b id="prog-txt">0%</b></div>
+        <div class="track"><div class="fill" id="prog-fill"></div></div>
+      </div>
+      <div class="privacy">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Чернетка зберігається лише в цьому браузері
+      </div>
+    </div>
+    <div class="photo-block">
+      <button type="button" class="photo" id="photo-box" aria-label="Додати фото"></button>
+      <div class="photo-actions">
+        <button type="button" class="btn sm primary" id="btn-cam">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Камера
+        </button>
+        <button type="button" class="btn sm" id="btn-file">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Файл
+        </button>
+        <button type="button" class="btn sm icon danger" id="btn-photo-del" aria-label="Видалити фото" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+        </button>
+      </div>
+      <input type="file" id="file-in" accept="image/*" hidden>
+    </div>
+  </header>
+
+  <nav class="nav" id="nav" aria-label="Розділи анкети"></nav>
+
+  <form id="form" novalidate autocomplete="off" onsubmit="return false"></form>
+
+  <label class="card consent" id="consent-card">
+    <input type="checkbox" id="consent">
+    <span>Надаю згоду на обробку моїх персональних даних відповідно до Закону України «Про захист персональних даних».</span>
+  </label>
+
+  <footer class="rights">
+    © <b>Всі права захищені.</b> Будь-яке використання матеріалів цього застосунку без письмового дозволу правовласника
+    може бути порушенням чинного законодавства України.<br>Розробник: <b>ШВИДЧЕНКО ЮЛІЯ</b>
+  </footer>
+</div>
+
+<!-- bottom bar -->
+<div class="bar">
+  <div class="bar-in">
+    <div class="ring"><svg viewBox="0 0 44 44"><circle class="bg" cx="22" cy="22" r="18"/><circle class="fg" id="ring-fg" cx="22" cy="22" r="18"/></svg><b id="ring-txt">0%</b></div>
+    <div class="bar-info"><b id="bar-count">0 з 0 полів</b><small id="save-st">Чернетка зберігається автоматично</small></div>
+    <button type="button" class="btn btn-clear" id="btn-clear" aria-label="Очистити анкету">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span>Очистити</span>
+    </button>
+    <button type="button" class="btn primary" id="btn-pdf">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15l3 3 3-3"/></svg>Сформувати PDF
+    </button>
+  </div>
+</div>
+
+<!-- camera -->
+<div class="cam" id="cam" role="dialog" aria-label="Камера">
+  <div class="cam-frame"><video id="vid" autoplay playsinline muted></video><div class="cam-guide"></div></div>
+  <div class="cam-hint">Розмістіть обличчя в овалі. Фото буде обрізано до формату 35×45 мм</div>
+  <div class="cam-ctrl">
+    <button type="button" class="round" id="cam-close" aria-label="Скасувати">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <button type="button" class="shutter" id="cam-shot" aria-label="Зробити фото"></button>
+    <button type="button" class="round" id="cam-flip" aria-label="Перемкнути камеру">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3l-2-3H9L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M9 13a3 3 0 0 1 5-2.2M15 14a3 3 0 0 1-5 2.2M14 9v2h-2M10 18v-2h2"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- dialogs -->
+<dialog class="modal" id="dlg-done">
+  <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+  <h3>Файл готовий!</h3>
+  <p>Перешліть згенерований PDF<br><b>ППП батальйону!</b></p>
+  <div class="tip">Якщо файл не зберігся — у вікні друку оберіть принтер «Зберегти як PDF» і натисніть «Зберегти».</div>
+  <div class="acts"><button type="button" class="btn" id="dlg-again">Ще раз</button><button type="button" class="btn primary" id="dlg-ok">Готово</button></div>
+</dialog>
+
+<dialog class="modal" id="dlg-clear">
+  <div class="ico warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg></div>
+  <h3>Очистити анкету?</h3>
+  <p>Усі введені дані та фото буде видалено з цього пристрою. Дію не можна скасувати.</p>
+  <div class="acts"><button type="button" class="btn" id="clear-no">Скасувати</button><button type="button" class="btn primary" id="clear-yes" style="background:linear-gradient(135deg,#ef4444,#b91c1c);box-shadow:none">Очистити</button></div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- PDF (fills on print) -->
+<div id="pdf"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ===== Конфігурація полів (одне джерело і для форми, і для PDF) ===== */
+const NONE = ['Немає'];
+const SECTIONS = [
+  { id:'person', short:'Особа', title:'Особові дані', range:'0', fields:[
+    { key:'pib',  n:0, label:'Прізвище, ім’я, по батькові', ph:'ШЕВЧЕНКО ТАРАС ГРИГОРОВИЧ', cls:'upper', req:true, span:12 },
+    { key:'head', label:'Підрозділ, посада, військове звання', ph:'1 рота, стрілець, солдат', span:12 },
+  ]},
+  { id:'main', short:'Основне', title:'Основна інформація', range:'1–8', fields:[
+    { key:'p1', n:1, label:'Дата народження', pdf:'Число, місяць, рік народження', type:'date', ph:'ДД.ММ.РРРР', span:4 },
+    { key:'p2', n:2, label:'Місце народження', ph:'Населений пункт, область', span:8 },
+    { key:'p3', n:3, label:'Адреса проживання, телефон', pdf:'Адреса проживання на даний час (телефон)', ph:'Адреса, +380…', span:8 },
+    { key:'p4', n:4, label:'Місце реєстрації (прописка)', span:4 },
+    { key:'p5', n:5, label:'Дата призову', pdf:'Число, місяць, рік призову', type:'date', ph:'ДД.ММ.РРРР', span:4 },
+    { key:'p6', n:6, label:'Яким РВК (ТЦК та СП) призваний та коли', pdf:'Яким РВК (ТЦК та СП) призваний та коли', span:8 },
+    { key:'p7', n:7, label:'Національність', chips:['Українець','Українка'], span:4 },
+    { key:'p8', n:8, label:'Сімейний стан', chips:['Одружений','Неодружений','Розлучений','Цивільний шлюб'], span:8 },
+  ]},
+  { id:'family', short:'Сім’я', title:'Склад сім’ї', range:'9', fields:[
+    { key:'fa', n:'9.1', label:'Батько (ПІБ, моб.)', pdf:'Батько — моб.', span:6 },
+    { key:'fm', n:'9.2', label:'Мати (ПІБ, моб.)',   pdf:'Мати — моб.', span:6 },
+    { key:'fb', n:'9.3', label:'Брат / Сестра (ПІБ)', pdf:'Брат / Сестра', span:6 },
+    { key:'fw', n:'9.4', label:'Дружина / Чоловік (ПІБ, моб.)', pdf:'Дружина / Чоловік — моб.', span:6 },
+    { key:'fc', n:'9.5', label:'Діти (імена та дати народження)', pdf:'Діти (дати народження)', type:'area', chips:NONE, span:12 },
+  ]},
+  { id:'service', short:'Служба', title:'Службові та ідентифікаційні дані', range:'10–21', fields:[
+    { key:'p10', n:10, label:'Військова освіта', chips:NONE, span:6 },
+    { key:'p11', n:11, label:'Цивільна освіта', chips:['Середня','Професійно-технічна','Вища'], span:6 },
+    { key:'p12', n:12, label:'Стан здоров’я, тяжкі захворювання', chips:['Здоровий'], span:6 },
+    { key:'p13', n:13, label:'ВЛК (проходив / не проходив, коли)', chips:['Не проходив'], span:6 },
+    { key:'p14', n:14, label:'Участь у бойових діях, миротворчих операціях', pdf:'Участь в бойових діях, миротворчих операціях', chips:['Не брав участі'], span:12 },
+    { key:'p15', n:15, label:'№ військового квитка, дата та ким видано', pdf:'№ військового квитка. Дата та ким видано', span:6 },
+    { key:'p16', n:16, label:'№ паспорта, дата та ким видано', pdf:'№ паспорта. Дата та ким видано', span:6 },
+    { key:'p17', n:17, label:'Ідентифікаційний код (РНОКПП)', pdf:'Ідентифікаційний код', type:'num', max:10, ph:'10 цифр', span:4 },
+    { key:'p18', n:18, label:'Де працював до призову', pdf:'Де працював до призову на військову службу', span:8 },
+    { key:'p19', n:19, label:'Захоплення', span:4 },
+    { key:'p20', n:20, label:'Де проходив строкову службу', chips:['Не проходив'], span:4 },
+    { key:'p21', n:21, label:'Аліменти', chips:NONE, span:4 },
+  ]},
+  { id:'personal', short:'Особисте', title:'Особисті дані', range:'22–27', fields:[
+    { key:'p22', n:22, label:'Позивний', pdf:'ПОЗИВНИЙ', cls:'callsign', bold:true, span:6 },
+    { key:'p23', n:23, label:'Судимість', chips:NONE, span:6 },
+    { key:'p24', n:24, label:'Група крові', chips:['0(I) Rh+','0(I) Rh−','A(II) Rh+','A(II) Rh−','B(III) Rh+','B(III) Rh−','AB(IV) Rh+','AB(IV) Rh−'], span:12 },
+    { key:'p25', n:25, label:'Державні нагороди', chips:NONE, span:4 },
+    { key:'p26', n:26, label:'Кредит (який банк, сума)', chips:NONE, span:4 },
+    { key:'p27', n:27, label:'Наявність УБД', chips:['Так','Ні'], span:4 },
+  ]},
+  { id:'marks', short:'Прикмети', title:'Зовнішність та особливі прикмети', range:'28–41', fields:[
+    { key:'p28', n:28, label:'Ріст, см', pdf:'Ріст', type:'num', unit:'см', max:3, span:3 },
+    { key:'p29', n:29, label:'Вага, кг', pdf:'Вага', type:'num', unit:'кг', max:3, span:3 },
+    { key:'p30', n:30, label:'Статура', chips:['Худорлява','Середня','Щільна','Атлетична','Повна'], span:6 },
+    { key:'p31', n:31, label:'Розмір взуття', type:'num', max:2, span:3 },
+    { key:'p32', n:32, label:'Волосся (колір)', pdf:'Волосся', chips:['Темне','Русяве','Світле','Руде','Сиве','Відсутнє'], span:9 },
+    { key:'p33', n:33, label:'Зуби', chips:['Без особливостей','Є коронки','Відсутні окремі'], span:12 },
+    { key:'p34', n:34, label:'Татуювання (зміст і точне місце розташування)', type:'area', chips:NONE, span:12 },
+    { key:'p35', n:35, label:'Відсутність кінцівок (пальці рук, ніг)', chips:NONE, span:12 },
+    { key:'p36', n:36, label:'Шкірний покрив (шрами, опіки, родимки)', type:'area', chips:['Без особливостей'], span:12 },
+    { key:'p37', n:37, label:'Форма зачіски', chips:['Коротка','Під машинку','Середня'], span:4 },
+    { key:'p38', n:38, label:'Вуса', chips:['Немає','Є'], span:4 },
+    { key:'p39', n:39, label:'Борода', chips:['Немає','Є'], span:4 },
+    { key:'p40', n:40, label:'Шкідливі звички', chips:['Немає','Паління','Алкоголь'], span:12 },
+    { key:'p41', n:41, label:'Які плани на майбутнє', type:'area', span:12 },
+  ]},
+];
+const FIELDS = SECTIONS.flatMap(s => s.fields);
+const BY_KEY = Object.fromEntries(FIELDS.map(f => [f.key, f]));
+const STORE = 'sdk-anketa-v2';
+const ORIGINAL_TITLE = document.title;
+const PHOTO_W = 420, PHOTO_H = 540; // 35×45
+
+/* ===== helpers ===== */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const val = k => (state[k] || '').trim();
+
+let state = {}, photo = null, saveTimer = null, toastTimer = null;
+
+/* ===== storage ===== */
+function load(){
+  try{
+    const d = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (d && typeof d === 'object'){ state = d.state || {}; photo = d.photo || null; }
+  }catch(e){ state = {}; photo = null; }
+}
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try{
+      localStorage.setItem(STORE, JSON.stringify({ state, photo, t: Date.now() }));
+      const t = new Date().toLocaleTimeString('uk-UA', { hour:'2-digit', minute:'2-digit' });
+      $('#save-st').textContent = 'Збережено на пристрої · ' + t;
+    }catch(e){
+      $('#save-st').textContent = 'Автозбереження недоступне';
+    }
+  }, 350);
+}
+
+/* ===== render ===== */
+function fieldHTML(f){
+  const id = 'in-' + f.key;
+  const im = (f.type === 'date' || f.type === 'num') ? ' inputmode="numeric"' : '';
+  const max = f.type === 'date' ? 10 : f.max;
+  const attrs = `id="${id}" data-key="${f.key}" class="in ${f.cls || ''}" placeholder="${esc(f.ph || '')}"${max ? ` maxlength="${max}"` : ''}${f.req ? ' required' : ''}`;
+  const input = f.type === 'area'
+    ? `<textarea ${attrs} rows="1"></textarea>`
+    : `<input type="text" ${attrs}${im} enterkeyhint="next" autocomplete="off" spellcheck="false">`;
+  const chips = f.chips
+    ? `<div class="chips">${f.chips.map(c => `<button type="button" class="chip" data-for="${f.key}" data-v="${esc(c)}">${esc(c)}</button>`).join('')}</div>`
+    : '';
+  const num = f.n != null ? `<span class="n">${f.n}</span>` : '';
+  return `<div class="f c-${f.span || 12}" id="f-${f.key}"><label for="${id}">${num}<span>${esc(f.label)}</span>${f.req ? '<em class="req">*</em>' : ''}</label>${input}${chips}</div>`;
+}
+
+function render(){
+  $('#form').innerHTML = SECTIONS.map((s, i) => `
+    <section class="card sec" id="sec-${s.id}" data-sec="${s.id}" style="animation-delay:${i * 60}ms">
+      <div class="sec-head"><span class="sec-num">${s.range}</span><h2>${esc(s.title)}</h2><span class="pill" id="pill-${s.id}"></span></div>
+      <div class="grid">${s.fields.map(fieldHTML).join('')}</div>
+    </section>`).join('');
+  $('#nav').innerHTML = SECTIONS.map(s =>
+    `<button type="button" data-go="${s.id}"><span>${esc(s.short)}</span><span class="cnt" id="nav-${s.id}"></span></button>`).join('');
+}
+
+function fillValues(){
+  FIELDS.forEach(f => {
+    const el = document.getElementById('in-' + f.key);
+    el.value = state[f.key] || '';
+    if (el.tagName === 'TEXTAREA') autosize(el);
+  });
+  refresh();
+}
+
+function autosize(el){ el.style.height = 'auto'; el.style.height = el.scrollHeight + 2 + 'px'; }
+
+function refresh(){
+  let done = 0;
+  SECTIONS.forEach(s => {
+    let c = 0;
+    s.fields.forEach(f => {
+      const has = !!val(f.key);
+      if (has) c++;
+      document.getElementById('f-' + f.key).classList.toggle('filled', has);
+    });
+    done += c;
+    const full = c === s.fields.length;
+    const pill = document.getElementById('pill-' + s.id);
+    pill.textContent = `${c}/${s.fields.length}`;
+    pill.classList.toggle('full', full);
+    document.getElementById('nav-' + s.id).textContent = full ? '✓' : `${c}/${s.fields.length}`;
+    document.querySelector(`[data-go="${s.id}"]`).classList.toggle('done', full);
+  });
+  const total = FIELDS.length;
+  const pct = Math.round(done / total * 100);
+  $('#prog-fill').style.width = pct + '%';
+  $('#prog-txt').textContent = pct + '%';
+  $('#ring-txt').textContent = pct + '%';
+  $('#ring-fg').style.strokeDashoffset = (113.1 * (1 - pct / 100)).toFixed(1);
+  $('#bar-count').textContent = `${done} з ${total} полів`;
+  $$('.chip').forEach(ch => ch.classList.toggle('on', val(ch.dataset.for) === ch.dataset.v));
+}
+
+/* ===== input ===== */
+function maskDate(el){
+  const d = el.value.replace(/\D/g, '').slice(0, 8);
+  let o = d.slice(0, 2);
+  if (d.length > 2) o += '.' + d.slice(2, 4);
+  if (d.length > 4) o += '.' + d.slice(4);
+  el.value = o;
+}
+
+function bindForm(){
+  const form = $('#form');
+  form.addEventListener('input', e => {
+    const el = e.target, key = el.dataset.key;
+    if (!key) return;
+    const f = BY_KEY[key];
+    if (f.type === 'date') maskDate(el);
+    else if (f.type === 'num') el.value = el.value.replace(/[^\d]/g, '');
+    if (el.tagName === 'TEXTAREA') autosize(el);
+    state[key] = el.value;
+    document.getElementById('f-' + key).classList.remove('err');
+    refresh(); save();
+  });
+  form.addEventListener('click', e => {
+    const ch = e.target.closest('.chip');
+    if (!ch) return;
+    const el = document.getElementById('in-' + ch.dataset.for);
+    el.value = el.value === ch.dataset.v ? '' : ch.dataset.v;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  form.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
+    e.preventDefault();
+    const all = $$('#form .in');
+    const next = all[all.indexOf(e.target) + 1];
+    if (next) next.focus(); else e.target.blur();
+  });
+}
+
+/* ===== nav ===== */
+function bindNav(){
+  const nav = $('#nav');
+  nav.addEventListener('click', e => {
+    const b = e.target.closest('[data-go]');
+    if (b) document.getElementById('sec-' + b.dataset.go).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const id = en.target.dataset.sec;
+      $$('#nav button').forEach(b => b.classList.toggle('active', b.dataset.go === id));
+      const b = document.querySelector(`[data-go="${id}"]`);
+      nav.scrollTo({ left: b.offsetLeft - nav.clientWidth / 2 + b.clientWidth / 2, behavior: 'smooth' });
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  $$('.sec').forEach(s => io.observe(s));
+}
+
+/* ===== toast ===== */
+function toast(msg, kind){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (kind ? ' ' + kind : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+function shake(el){ el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+
+/* ===== photo ===== */
+const PHOTO_EMPTY = `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg><span>Фото<br>35×45</span>`;
+
+function setPhoto(data){
+  photo = data || null;
+  const box = $('#photo-box');
+  box.innerHTML = photo ? `<img src="${photo}" alt="Фото">` : PHOTO_EMPTY;
+  box.classList.toggle('has', !!photo);
+  $('#btn-photo-del').hidden = !photo;
+  save();
+}
+
+function cropToPhoto(src, w, h){
+  const R = 35 / 45;
+  let sw = w, sh = w / R;
+  if (sh > h){ sh = h; sw = h * R; }
+  const c = document.createElement('canvas');
+  c.width = PHOTO_W; c.height = PHOTO_H;
+  const ctx = c.getContext('2d');
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(src, (w - sw) / 2, (h - sh) / 2, sw, sh, 0, 0, PHOTO_W, PHOTO_H);
+  return c.toDataURL('image/jpeg', 0.86);
+}
+
+function loadFile(file){
+  if (!file) return;
+  if (!/^image\//.test(file.type)){ toast('Оберіть файл зображення', 'err'); return; }
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    setPhoto(cropToPhoto(img, img.naturalWidth, img.naturalHeight));
+    URL.revokeObjectURL(url);
+    toast('Фото додано', 'ok');
+  };
+  img.onerror = () => { URL.revokeObjectURL(url); toast('Не вдалося відкрити зображення', 'err'); };
+  img.src = url;
+}
+
+/* ===== camera ===== */
+let stream = null, facing = 'user';
+const vid = $('#vid'), cam = $('#cam');
+
+function stopStream(){ if (stream){ stream.getTracks().forEach(t => t.stop()); stream = null; } }
+
+async function startCam(){
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    toast('Камера недоступна — оберіть фото з галереї');
+    $('#file-in').click();
+    return;
+  }
+  try{
+    stopStream();
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: facing, width: { ideal: 1280 }, height: { ideal: 1280 } }, audio: false
+    });
+    vid.srcObject = stream;
+    vid.classList.toggle('mirror', facing === 'user');
+    cam.classList.add('open');
+    document.body.classList.add('lock');
+  }catch(e){
+    closeCam();
+    toast('Немає доступу до камери. Дозвольте доступ або оберіть файл', 'err');
+  }
+}
+function closeCam(){
+  stopStream();
+  vid.srcObject = null;
+  cam.classList.remove('open');
+  document.body.classList.remove('lock');
+}
+function capture(){
+  if (!vid.videoWidth){ toast('Камера ще запускається…'); return; }
+  setPhoto(cropToPhoto(vid, vid.videoWidth, vid.videoHeight));
+  closeCam();
+  toast('Фото додано', 'ok');
+}
+
+/* ===== PDF ===== */
+function buildPdf(){
+  const out = k => {
+    let x = val(k);
+    const f = BY_KEY[k];
+    if (x && f.unit && /^\d+$/.test(x)) x += ' ' + f.unit;
+    if (k === 'p22') x = x.toUpperCase();
+    return esc(x);
+  };
+  const row = f => `<tr><td class="c1">${f.n}.</td><td>${f.bold ? '<b>' : ''}${esc(f.pdf || f.label)}${f.bold ? '</b>' : ''}</td><td class="v"${f.bold ? ' style="font-weight:bold"' : ''}>${out(f.key)}</td></tr>`;
+  const range = (a, b) => FIELDS.filter(f => typeof f.n === 'number' && f.n >= a && f.n <= b).map(row).join('');
+  const fam = SECTIONS.find(s => s.id === 'family').fields;
+  const cols = '<colgroup><col style="width:10mm"><col style="width:68mm"><col></colgroup>';
+  const thead = '<thead><tr><th>№</th><th>Показник</th><th>Значення</th></tr></thead>';
+  const rights = '© <b>Всі права захищені.</b> Використання без дозволу — порушення чинного законодавства України.<br>Розробник: <b>ШВИДЧЕНКО ЮЛІЯ</b>';
+  const pib = esc(val('pib').toUpperCase());
+
+  $('#pdf').innerHTML = `
+  <div class="pg">
+    <div class="p-head">
+      <div class="p-photo">${photo ? `<img src="${photo}" alt="">` : 'ФОТО<br>35×45'}</div>
+      <div class="p-text">
+        <div class="p-title">ЛИСТ</div>
+        <div class="p-sub">соціально-демографічних даних</div>
+        <div class="p-line it">${out('head')}</div>
+        <div class="p-cap">(підрозділ, посада, військове звання)</div>
+        <div class="p-line b">${pib}</div>
+        <div class="p-cap">(ПІБ повністю)</div>
+      </div>
+    </div>
+    <table class="pt">${cols}${thead}<tbody>
+      ${range(1, 8)}
+      <tr><td class="c1" rowspan="${fam.length + 1}">9.</td><td colspan="2" class="fam-h">СКЛАД СІМ’Ї</td></tr>
+      ${fam.map(f => `<tr><td>${esc(f.pdf || f.label)}</td><td class="v">${out(f.key)}</td></tr>`).join('')}
+      ${range(10, 21)}
+      <tr><td colspan="3" class="p-rights">${rights}</td></tr>
+    </tbody></table>
+  </div>
+  <div class="pg pg2">
+    <table class="pt">${cols}${thead}<tbody>${range(22, 41)}</tbody></table>
+    <div class="p-consent">Я, <b>${pib || '____________________'}</b>, відповідно до Закону України «Про захист персональних даних», даю добровільну згоду на обробку моїх персональних даних в обсязі, що міститься у цій анкеті.</div>
+    <div class="p-sign">
+      <div><div class="ln">${new Date().toLocaleDateString('uk-UA')}</div><div class="cp">(дата)</div></div>
+      <div><div class="ln"></div><div class="cp">(підпис)</div></div>
+    </div>
+    <table class="pt"><tbody><tr><td class="p-rights">${rights}</td></tr></tbody></table>
+  </div>`;
+}
+
+let awaitingPrint = false;
+function generate(){
+  if (!val('pib')){
+    const f = $('#f-pib');
+    f.classList.add('err'); shake(f);
+    f.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => $('#in-pib').focus({ preventScroll: true }), 450);
+    toast('Вкажіть ПІБ повністю', 'err');
+    return;
+  }
+  const cc = $('#consent-card');
+  if (!$('#consent').checked){
+    cc.classList.add('err'); shake(cc);
+    cc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    toast('Необхідно надати згоду на обробку даних', 'err');
+    return;
+  }
+  const empty = FIELDS.filter(f => !val(f.key)).length;
+  buildPdf();
+  const short = val('pib').split(/\s+/).slice(0, 2).join(' ');
+  document.title = `Військова Анкета — ${short}`;
+  if (empty) toast(`Незаповнених полів: ${empty}. Їх можна дописати від руки`);
+  awaitingPrint = true;
+  setTimeout(() => {
+    window.print();
+    setTimeout(showDone, 700);
+  }, 60);
+}
+function showDone(){
+  if (!awaitingPrint) return;
+  awaitingPrint = false;
+  openDlg('#dlg-done');
+}
+
+/* ===== dialogs ===== */
+function openDlg(sel){
+  const d = $(sel);
+  if (typeof d.showModal === 'function'){ if (!d.open) d.showModal(); }
+  else d.setAttribute('open', '');
+}
+function closeDlg(sel){ const d = $(sel); if (typeof d.close === 'function') d.close(); else d.removeAttribute('open'); }
+
+function clearAll(){
+  state = {};
+  setPhoto(null);
+  $('#consent').checked = false;
+  $('#consent-card').classList.remove('on');
+  fillValues();
+  try{ localStorage.removeItem(STORE); }catch(e){}
+  $('#save-st').textContent = 'Анкету очищено';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  toast('Анкету очищено', 'ok');
+}
+
+/* ===== init ===== */
+load();
+render();
+fillValues();
+setPhoto(photo);
+bindForm();
+bindNav();
+
+$('#photo-box').addEventListener('click', () => $('#file-in').click());
+$('#btn-file').addEventListener('click', () => $('#file-in').click());
+$('#file-in').addEventListener('change', e => { loadFile(e.target.files[0]); e.target.value = ''; });
+$('#btn-photo-del').addEventListener('click', () => { setPhoto(null); toast('Фото видалено'); });
+$('#btn-cam').addEventListener('click', startCam);
+$('#cam-close').addEventListener('click', closeCam);
+$('#cam-shot').addEventListener('click', capture);
+$('#cam-flip').addEventListener('click', () => { facing = facing === 'user' ? 'environment' : 'user'; startCam(); });
+
+$('#consent').addEventListener('change', e => {
+  $('#consent-card').classList.toggle('on', e.target.checked);
+  $('#consent-card').classList.remove('err');
+});
+
+$('#btn-pdf').addEventListener('click', generate);
+$('#btn-clear').addEventListener('click', () => openDlg('#dlg-clear'));
+$('#clear-no').addEventListener('click', () => closeDlg('#dlg-clear'));
+$('#clear-yes').addEventListener('click', () => { closeDlg('#dlg-clear'); clearAll(); });
+$('#dlg-ok').addEventListener('click', () => closeDlg('#dlg-done'));
+$('#dlg-again').addEventListener('click', () => { closeDlg('#dlg-done'); generate(); });
+$$('dialog.modal').forEach(d => d.addEventListener('click', e => { if (e.target === d) closeDlg('#' + d.id); }));
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && cam.classList.contains('open')) closeCam(); });
+window.addEventListener('beforeprint', buildPdf);   // коректний PDF навіть при Ctrl+P
+window.addEventListener('afterprint', () => { document.title = ORIGINAL_TITLE; });
+window.addEventListener('pagehide', stopStream);
+})();
+</script>
+</body>
+</html>
